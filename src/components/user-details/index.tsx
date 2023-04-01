@@ -9,8 +9,8 @@ interface Props {
 
 const UserDetails: React.FC<Props> = ({ user }) => {
   return (
-    <div>
-      <h2 className={styles.title}>{user.name} Details:</h2>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Details:</h2>
       <div className={styles.info}>
         <h2>{user.name}</h2>
         <p>{user.email}</p>
