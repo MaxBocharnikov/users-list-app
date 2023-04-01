@@ -54,6 +54,7 @@ const UserList: React.FC = () => {
   }, [JSON.stringify(users), filterValue, getFilteredUsers])
 
   useEffect(() => {
+    if (users.length !== filteredUsers.length) return
     if (inView && hasNextPage && !isFetchingNextPage) {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       fetchNextPage()
@@ -78,7 +79,9 @@ const UserList: React.FC = () => {
               onUserItemClick={onUserItemClick}
             />
           ))}
-          {hasNextPage && <div ref={ref}>Loading..</div>}
+          {hasNextPage && (
+            <div ref={ref}>{isFetchingNextPage ? 'Loading...' : ''}</div>
+          )}
         </div>
       </>
     )
