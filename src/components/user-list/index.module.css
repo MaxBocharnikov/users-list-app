@@ -1,11 +1,12 @@
 .container {
     width: 50%;
+
 }
 
 .title {
     margin-bottom: 20px;
     text-align: center;
-    font-size: 32px;
+    font-size: 28px;
     color: var(--color-black);
 }
 
@@ -15,4 +16,8 @@
     align-items: center;
     justify-content: center;
     margin: 20px;
+}
+
+.empty, .error {
+    text-align: center;
 }

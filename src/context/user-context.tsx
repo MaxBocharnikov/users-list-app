@@ -10,8 +10,11 @@ interface Props {
 
 export const UserContextProvider: React.FC<Props> = ({ children }) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [filterValue, setFilterValue] = useState<string>('')
   return (
-    <UserContext.Provider value={{ selectedUser, setSelectedUser }}>
+    <UserContext.Provider
+      value={{ selectedUser, setSelectedUser, filterValue, setFilterValue }}
+    >
       {children}
     </UserContext.Provider>
   )

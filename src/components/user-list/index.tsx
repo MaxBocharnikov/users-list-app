@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 import { fetchUserList } from 'api/users'
@@ -9,9 +9,12 @@ import { type UserContextType } from 'types/user-context'
 import { type User } from 'types/user'
 
 import styles from './index.module.css'
+import { getFilteredUsers } from '../../utils/users'
 
 const UserList: React.FC = () => {
-  const { setSelectedUser } = useContext(UserContext) as UserContextType
+  const { setSelectedUser, filterValue } = useContext(
+    UserContext
+  ) as UserContextType
   const {
     isLoading,
     data: users,
@@ -21,6 +24,8 @@ const UserList: React.FC = () => {
     queryFn: async () => await fetchUserList()
   })
 
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([])
+
   const onUserItemClick = useCallback(
     (user: User | null) => {
       setSelectedUser(user)
@@ -28,22 +33,35 @@ const UserList: React.FC = () => {
     [setSelectedUser]
   )
 
-  if (isLoading) return <Loader />
-  if (error) return <div>Something went wrong...</div>
-  if (!users || users.length === 0) return <div>The list is empty...</div>
+  useEffect(() => {
+    if (!users) return
+    const filteredUsers = getFilteredUsers(users, filterValue)
+    setFilteredUsers(filteredUsers)
+  }, [JSON.stringify(users), filterValue, getFilteredUsers])
+
+  const renderUsers = () => {
+    if (isLoading) return <Loader />
+    if (error) { return <div className={styles.error}>Something went wrong...</div> }
+    if (filteredUsers.length === 0) { return <div className={styles.empty}>The list is empty...</div> }
+    return (
+      <>
+        <div className={styles.list}>
+          {filteredUsers.map((user) => (
+            <UserItem
+              key={user.id}
+              user={user}
+              onUserItemClick={onUserItemClick}
+            />
+          ))}
+        </div>
+      </>
+    )
+  }
 
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Users:</h2>
-      <div className={styles.list}>
-        {users.map((user) => (
-          <UserItem
-            key={user.id}
-            user={user}
-            onUserItemClick={onUserItemClick}
-          />
-        ))}
-      </div>
+      {renderUsers()}
     </div>
   )
 }
