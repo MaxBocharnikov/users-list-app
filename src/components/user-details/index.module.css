@@ -1,0 +1,30 @@
+.container {
+    width: 50%;
+}
+
+.title {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 32px;
+    color: var(--color-black);
+}
+
+.info {
+    padding: 16px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+}
+
+.address {
+    margin-top: 16px;
+}
+
+.company {
+    margin-top: 16px;
+}
+
+@media (min-width: 768px) {
+    .info {
+        padding: 32px;
+    }
+}

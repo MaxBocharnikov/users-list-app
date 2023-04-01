@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
+
 import Page from 'components/ui-components/page'
 import UserList from 'components/user-list'
+import { UserContext } from 'context/user-context'
+import { type UserContextType } from 'types/user-context'
+import UserDetails from '../../components/user-details'
+
+import styles from './index.module.css'
 
 const MainPage: React.FC = () => {
+  const { selectedUser } = useContext(UserContext) as UserContextType
   return (
     <Page>
-      <UserList />
+      <div className={styles.container}>
+        <UserList />
+        {selectedUser && <UserDetails user={selectedUser} />}
+      </div>
     </Page>
   )
 }
