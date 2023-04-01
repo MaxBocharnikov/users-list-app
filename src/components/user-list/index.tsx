@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInView } from 'react-intersection-observer'
 
 import { fetchUserList } from 'api/users'
 import UserItem from './user-item'
@@ -12,17 +13,30 @@ import styles from './index.module.css'
 import { getFilteredUsers } from '../../utils/users'
 
 const UserList: React.FC = () => {
+  const { ref, inView } = useInView()
   const { setSelectedUser, filterValue } = useContext(
     UserContext
   ) as UserContextType
   const {
     isLoading,
-    data: users,
-    error
-  } = useQuery({
-    queryKey: ['userList'],
-    queryFn: async () => await fetchUserList()
-  })
+    data,
+    error,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage
+  } = useInfiniteQuery(
+    ['userList'],
+    async ({ pageParam = 1 }) => await fetchUserList(pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        const nextPage = lastPage.page + 1
+        return nextPage <= lastPage.totalPages ? nextPage : undefined
+      },
+      cacheTime: 0
+    }
+  )
+
+  const users = data ? data.pages.flatMap((page) => page.users) : []
 
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
 
@@ -39,10 +53,21 @@ const UserList: React.FC = () => {
     setFilteredUsers(filteredUsers)
   }, [JSON.stringify(users), filterValue, getFilteredUsers])
 
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      fetchNextPage()
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
+
   const renderUsers = () => {
     if (isLoading) return <Loader />
-    if (error) { return <div className={styles.error}>Something went wrong...</div> }
-    if (filteredUsers.length === 0) { return <div className={styles.empty}>The list is empty...</div> }
+    if (error) {
+      return <div className={styles.error}>Something went wrong...</div>
+    }
+    if (filteredUsers.length === 0) {
+      return <div className={styles.empty}>The list is empty...</div>
+    }
     return (
       <>
         <div className={styles.list}>
@@ -53,6 +78,7 @@ const UserList: React.FC = () => {
               onUserItemClick={onUserItemClick}
             />
           ))}
+          {hasNextPage && <div ref={ref}>Loading..</div>}
         </div>
       </>
     )
