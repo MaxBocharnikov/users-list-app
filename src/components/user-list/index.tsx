@@ -16,14 +16,8 @@ const UserList: React.FC = () => {
   const { setSelectedUser, filterValue } = useContext(
     UserContext
   ) as UserContextType
-  const {
-    isLoading,
-    data,
-    error,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage
-  } = useUsersQuery()
+  const { data, status, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useUsersQuery()
 
   const users = data ? data.pages.flatMap((page) => page.users) : []
 
@@ -51,8 +45,8 @@ const UserList: React.FC = () => {
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
   const renderUsers = () => {
-    if (isLoading) return <Loader />
-    if (error) {
+    if (status === 'loading') return <Loader />
+    if (status === 'error') {
       return <div className={styles.error}>Something went wrong...</div>
     }
     if (filteredUsers.length === 0) {
