@@ -2,6 +2,7 @@
   "name": "users-list-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@tanstack/react-query": "^4.28.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -66,5 +67,6 @@
       "npx prettier --write",
       "npx eslint --fix"
     ]
-  }
+  },
+  "repository": "https://github.com/MaxBocharnikov/users-list-app.git"
 }
