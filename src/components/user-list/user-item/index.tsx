@@ -12,6 +12,7 @@ interface Props {
 const UserItem: React.FC<Props> = ({ user, onUserItemClick }) => {
   return (
     <div
+      data-testid={`user-${user.id}`}
       className={styles.user}
       onClick={() => {
         onUserItemClick(user)

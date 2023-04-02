@@ -12,7 +12,7 @@ const UserDetails: React.FC<Props> = ({ user }) => {
     <div className={styles.container}>
       <h2 className={styles.title}>Details:</h2>
       <div className={styles.info}>
-        <h2>{user.name}</h2>
+        <h2 data-testid="user-details-name">{user.name}</h2>
         <p>{user.email}</p>
         <p>{user.phone}</p>
         <p>{user.website}</p>

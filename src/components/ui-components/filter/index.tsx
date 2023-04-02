@@ -14,6 +14,7 @@ const Filter: React.FC<Props> = ({ value, onChange, placeholder }) => {
   return (
     <div className={styles.container}>
       <Input
+        dataTestId="filter"
         type="text"
         placeholder={placeholder}
         value={value}

@@ -7,19 +7,22 @@ interface Props {
   onChange: (value: string) => void
   placeholder: string
   type?: string
+  dataTestId?: string
 }
 
 const Input: React.FC<Props> = ({
   value,
   onChange,
   placeholder,
-  type = 'text'
+  type = 'text',
+  dataTestId
 }) => {
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value)
   }
   return (
     <input
+      data-testid={dataTestId}
       className={styles.input}
       value={value}
       onChange={onChangeHandler}
