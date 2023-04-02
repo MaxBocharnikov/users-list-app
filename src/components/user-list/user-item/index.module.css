@@ -1,0 +1,44 @@
+.user {
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+    overflow-wrap: break-word;
+    cursor: pointer;
+    color: var(--color-black);
+    width: 210px;
+}
+
+.user:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+.name {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.user p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--color-secondary);
+}
+
+@media(max-width: 768px) {
+    .user {
+        flex-basis: calc(70% - 20px);
+        max-width: calc(70% - 20px);
+    }
+}
+@media (max-width: 480px) {
+    .user {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+}

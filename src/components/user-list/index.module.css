@@ -1,0 +1,22 @@
+.container {
+    width: 50%;
+
+}
+
+.title {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 28px;
+    color: var(--color-black);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty, .error {
+    text-align: center;
+}
