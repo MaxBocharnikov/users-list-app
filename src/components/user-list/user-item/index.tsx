@@ -11,7 +11,12 @@ interface Props {
 
 const UserItem: React.FC<Props> = ({ user, onUserItemClick }) => {
   return (
-    <div className={styles.user} onClick={() => { onUserItemClick(user) }}>
+    <div
+      className={styles.user}
+      onClick={() => {
+        onUserItemClick(user)
+      }}
+    >
       <div className={styles.name}>{user.name}</div>
       <p>{user.email}</p>
       <p>{user.company.name}</p>

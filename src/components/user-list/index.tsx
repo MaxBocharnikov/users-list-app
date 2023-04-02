@@ -1,16 +1,15 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import { useInfiniteQuery } from '@tanstack/react-query'
 import { useInView } from 'react-intersection-observer'
 
-import { fetchUserList } from 'api/users'
 import UserItem from './user-item'
 import Loader from 'components/ui-components/loader'
 import { UserContext } from 'context/user-context'
 import { type UserContextType } from 'types/user-context'
 import { type User } from 'types/user'
+import { getFilteredUsers } from 'utils/users'
+import { useUsersQuery } from 'hooks/use-users-query'
 
 import styles from './index.module.css'
-import { getFilteredUsers } from '../../utils/users'
 
 const UserList: React.FC = () => {
   const { ref, inView } = useInView()
@@ -24,17 +23,7 @@ const UserList: React.FC = () => {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage
-  } = useInfiniteQuery(
-    ['userList'],
-    async ({ pageParam = 1 }) => await fetchUserList(pageParam),
-    {
-      getNextPageParam: (lastPage) => {
-        const nextPage = lastPage.page + 1
-        return nextPage <= lastPage.totalPages ? nextPage : undefined
-      },
-      cacheTime: 0
-    }
-  )
+  } = useUsersQuery()
 
   const users = data ? data.pages.flatMap((page) => page.users) : []
 
